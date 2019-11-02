@@ -1,8 +1,8 @@
 # CppANN
-![Figure of the loss](http://libraneptune.byethost24.com/wordpress/wp-content/uploads/2019/11/newplot.png)
+![Figure of the loss](C:/Users/zsms1/Downloads/newplot.png)
 
-![Structure](http://libraneptune.byethost24.com/wordpress/wp-content/uploads/2019/11/ANN-1024x547.jpg)
+![Structure](C:/Users\zsms1/Documents/Tencent Files/1789869357/FileRecv/MobileFile/ANN.jpg)
 
-![Result](http://libraneptune.byethost24.com/wordpress/wp-content/uploads/2019/11/0AKPY4ADQ5VB2UGEELKM.png)
+![Result](C:/Users/zsms1/Desktop/0AKPY4ADQ5VB2UGEELKM.png)
 
-http://libraneptune.byethost24.com/wordpress/2019/11/02/simple-ann-realized-in-cpp-without-any-dl-framework/
+[post](http://libraneptune.byethost24.com/wordpress/2019/11/02/simple-ann-realized-in-cpp-without-any-dl-framework/)
