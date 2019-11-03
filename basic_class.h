@@ -35,9 +35,11 @@ using namespace std;
 
 // Functions
 #define relu(x) max(0,x)
+#define m_update(m,g) m=beta_1*m+(1-beta_1)*g
+#define v_update(v,g) v=beta_2*v+(1-beta_2)*pow(g,2)
 #define m_Hat(m,t) m/(1-pow(beta_1,t))
 #define v_Hat(v,t) v/(1-pow(beta_2,t))
-#define adam_update(w,m,v) w-alpha*m/(sqrt(v)+epsilon)
+#define adam_update(w,m,v) w-=alpha*m/(sqrt(v)+epsilon)
 #define linear(x,w,b) matmul(w,x)+b
 #define CEL(y,y_hat) sum(-1*(y*log(y_hat)+(1-y)*log(1-y_hat))) // Function of loss: Cross Entropy Loss
 #define MSE(y,y_hat) sum(pow(y-y_hat,2)) //Function of loss: Mean Square Error
@@ -84,7 +86,7 @@ public:
 class optimizer{
 public:
     optimizer(){};
-    void Adam(model_param mp, parameters Parameters);
+    void Adam(model_param mp, parameters Parameters,double step);
     ~optimizer(){};
 };
 
