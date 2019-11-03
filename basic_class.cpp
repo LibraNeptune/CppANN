@@ -15,30 +15,30 @@ model_param::model_param(Matrix w1, Matrix b1, Matrix w2, Matrix b2, Matrix l_v,
     this->l_2_v=l_2_v;
 }
 
-void optimizer::Adam(model_param mp, parameters Parameters){
-    Parameters.m_w1=Parameters.beta_1_*Parameters.m_w1+(1-Parameters.beta_1_)*mp.g_w1;
-    Parameters.v_w1=Parameters.beta_2_*Parameters.v_w1+(1-Parameters.beta_2_)*mp.g_w1*mp.g_w1;
-    auto m_hat_w1=Parameters.m_w1/(1-Parameters.beta_1_);
-    auto v_hat_w1=Parameters.v_w1/(1-Parameters.beta_2_);
-    mp.w1-=Parameters.alpha_*m_hat_w1/(sqrt(v_hat_w1)+Parameters.epsilon_);
+void optimizer::Adam(model_param mp, parameters Parameters,double step){
+    m_update(Parameters.m_w1,mp.g_w1);
+    v_update(Parameters.v_w1,mp.g_w1);
+    auto m_hat_w1=m_Hat(Parameters.m_w1,step);
+    auto v_hat_w1=v_Hat(Parameters.v_w1,step);
+    adam_update(mp.w1,Parameters.m_w1,Parameters.v_w1);
 
-    Parameters.m_b1=Parameters.beta_1_*Parameters.m_b1+(1-Parameters.beta_1_)*mp.g_b1;
-    Parameters.v_b1=Parameters.beta_2_*Parameters.v_b1+(1-Parameters.beta_2_)*mp.g_b1*mp.g_b1;
-    auto m_hat_b1=Parameters.m_b1/(1-Parameters.beta_1_);
-    auto v_hat_b1=Parameters.v_b1/(1-Parameters.beta_2_);
-    mp.b1-=Parameters.alpha_*m_hat_b1/(sqrt(v_hat_b1)+Parameters.epsilon_);
+    m_update(Parameters.m_b1,mp.g_b1);
+    v_update(Parameters.v_b1,mp.g_b1);
+    auto m_hat_b1=m_Hat(Parameters.m_b1,step);
+    auto v_hat_b1=v_Hat(Parameters.v_b1,step);
+    adam_update(mp.b1,Parameters.m_b1,Parameters.v_b1);
 
-    Parameters.m_w2=Parameters.beta_1_*Parameters.m_w2+(1-Parameters.beta_1_)*mp.g_w2;
-    Parameters.v_w2=Parameters.beta_2_*Parameters.v_w2+(1-Parameters.beta_2_)*mp.g_w2*mp.g_w2;
-    auto m_hat_w2=Parameters.m_w2/(1-Parameters.beta_1_);
-    auto v_hat_w2=Parameters.v_w2/(1-Parameters.beta_2_);
-    mp.w2-=Parameters.alpha_*m_hat_w2/(sqrt(v_hat_w2)+Parameters.epsilon_);
+    m_update(Parameters.m_w2,mp.g_w2);
+    v_update(Parameters.v_w2,mp.g_w2);
+    auto m_hat_w2=m_Hat(Parameters.m_w2,step);
+    auto v_hat_w2=v_Hat(Parameters.v_w2,step);
+    adam_update(mp.w2,Parameters.m_w2,Parameters.v_w2);
 
-    Parameters.m_b2=Parameters.beta_1_*Parameters.m_b2+(1-Parameters.beta_1_)*mp.g_b2;
-    Parameters.v_b2=Parameters.beta_2_*Parameters.v_b2+(1-Parameters.beta_2_)*mp.g_b2*mp.g_b2;
-    auto m_hat_b2=Parameters.m_b2/(1-Parameters.beta_1_);
-    auto v_hat_b2=Parameters.v_b2/(1-Parameters.beta_2_);
-    mp.b2-=Parameters.alpha_*m_hat_b2/(sqrt(v_hat_b2)+Parameters.epsilon_);
+    m_update(Parameters.m_b2,mp.g_b2);
+    v_update(Parameters.v_b2,mp.g_b2);
+    auto m_hat_b2=m_Hat(Parameters.m_b2,step);
+    auto v_hat_b2=v_Hat(Parameters.v_b2,step);
+    adam_update(mp.b2,Parameters.m_b2,Parameters.v_b2);
 }
 
 Matrix SNN::forward_propagation(Matrix input){
@@ -87,7 +87,7 @@ void SNN::train(){
     ofstream fout_1("C:/Users/zsms1/Desktop/loss_full.txt");
 
     auto batch_s=Parameters.batch_s;
-    double axis=0;
+    double step=0;
 
     for (int i=0;i<Parameters.epoch_n;++i){
         for (int j=0;j<Parameters.batch_n_train;++j){
@@ -108,7 +108,7 @@ void SNN::train(){
 //                               "win='window_1',update='append',"
 //                               "opts=dict(showlegend=True,legend=['loss']))");
             backward_propagation();
-            Opt.Adam(mp,Parameters);
+            Opt.Adam(mp,Parameters,++step);
 //            cout<<"point_4"<<endl;
         }
     }
