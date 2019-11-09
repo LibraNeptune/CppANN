@@ -8,7 +8,7 @@
 default_random_engine generator (seed);
 Matrix r_m::Guassian_matrix(double mean, double stddev, double d1, double d2){
     Matrix random_matrix(d1,d2);
-    normal_distribution<double> distribution (0.0,0.1);
+    normal_distribution<double> distribution mean,stddev);
     distribution.reset();
     for (int i=0; i<d1; ++i)
         for (int j = 0; j < d2; ++j)
